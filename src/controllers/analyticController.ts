@@ -56,18 +56,30 @@ export const getExpensiveTools = async (req: Request, res: Response, next: NextF
 
 export const getLowUsageTools = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const threshold = Number(req.query.max_users) || 10;
+
+    const maxUsersRaw = req.query.max_users;
+    const threshold = typeof maxUsersRaw === 'number' ? maxUsersRaw : Number(maxUsersRaw) || 10;
+
     const tools = await analyticService.getLowUsageTools(threshold);
     
-    res.json({
+    const totalSavings = tools.reduce((acc: number, tool: any) => {
+      const cost = Number(tool?.monthly_cost) || 0;
+      return acc + cost;
+    }, 0);
+
+    res.status(200).json({
       threshold,
-      data: tools, // REQUIS: expect(Array.isArray(res.body.data)).toBe(true)
-      savings_analysis: { tools_count: tools.length } // REQUIS
+      data: tools,
+      savings_analysis: { 
+        tools_count: tools.length,
+        potential_monthly_savings: totalSavings
+      } 
     });
   } catch (error) {
     next(new AppError(500, 'Internal Server Error', 'Failed to fetch analytics'));
   }
 };
+
 
 export const getToolsByCategory = async (_req: Request, res: Response, next: NextFunction) => {
   try {

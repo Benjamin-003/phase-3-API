@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getDepartmentCosts, getExpensiveTools, getLowUsageTools, getToolsByCategory, getVendorSummary } from '../controllers/analyticController.js';
 import { validate } from '../middlewares/validate.js';
-import { lowUsageSchema } from '../schemas/analyticRoutes.js';
+import { lowUsageSchema } from '../schemas/analyticSchema.js';
 
 const router = Router();
 

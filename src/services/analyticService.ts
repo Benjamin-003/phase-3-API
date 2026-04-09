@@ -14,7 +14,7 @@ export class AnalyticService {
    * Uses named helper functions to keep each step readable and testable.
    */
   async getDepartmentStats() {
-    const allTools = await toolRepository.findAll();
+   const allTools = await toolRepository.findAll();
     if (allTools.length === 0) return null;
 
     const stats = aggregateByDepartment(allTools);
@@ -117,9 +117,9 @@ export class AnalyticService {
   /**
    * Identifies tools with low active user counts.
    */
-  async getLowUsageTools(maxUsers: number = 5) {
-    return toolRepository.findByMaxUsers(maxUsers);
-  }
+  async getLowUsageTools(maxUsers: number = 10) {
+  return await toolRepository.findByMaxUsers(maxUsers);
+}
 
   /**
    * Groups and counts tools by their category.
@@ -134,7 +134,7 @@ export class AnalyticService {
       if (!catMap[cat.id]) {
         catMap[cat.id] = { id: cat.id, name: cat.name, tool_count: 0 };
       }
-      catMap[cat.id].tool_count++;
+      catMap[cat.id]!.tool_count++;
     }
 
     return Object.values(catMap).sort((a, b) => b.tool_count - a.tool_count);
