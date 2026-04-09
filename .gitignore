@@ -1,0 +1,23 @@
+# Dépendances
+node_modules/
+jspm_packages/
+
+# Build / Sortie
+dist/
+build/
+
+# Environnement (Variables secrètes, ports, clés API)
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS (Fichiers système inutiles)
+.DS_Store
+Thumbs.db
+/generated/prisma
